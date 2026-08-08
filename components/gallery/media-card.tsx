@@ -45,7 +45,6 @@ export default function MediaCard({ item, onClick }: MediaCardProps) {
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
             className="object-cover transition-transform duration-500 group-hover:scale-105"
-            unoptimized // Pexels CDN image URLs are pre-optimized
           />
         ) : (
           <div className="absolute inset-0 bg-zinc-900 flex items-center justify-center text-zinc-600">
@@ -123,7 +122,6 @@ export default function MediaCard({ item, onClick }: MediaCardProps) {
           height={item.height}
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
           className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-102"
-          unoptimized // Pexels CDN image URLs are pre-optimized
         />
       </div>
 
@@ -135,21 +133,6 @@ export default function MediaCard({ item, onClick }: MediaCardProps) {
             <p className="text-sm font-semibold truncate text-zinc-100">
               {author}
             </p>
-          </div>
-          <div className="flex items-center justify-center p-2 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 text-white shadow-md shrink-0">
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2.5}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 4v16m8-8H4"
-              />
-            </svg>
           </div>
         </div>
       </div>

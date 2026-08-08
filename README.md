@@ -1,6 +1,6 @@
-# Foto Owl - Visual Media Gallery
+# Frame Flow - Visual Media Gallery
 
-Foto Owl is a polished, production-quality photo and video gallery built as a single responsive web application inside Next.js. The interface features a dark-neutral visual design appropriate for modern photography and sports media workflows. It securely connects to the Pexels API using a server-side route proxy, uses GSAP for smooth micro-animations, and follows accessibility and web performance best practices.
+Frame Flow is a polished, production-quality photo and video gallery built as a single responsive web application inside Next.js. The interface features a dark-neutral visual design appropriate for modern photography and sports media workflows. It securely connects to the Pexels API using a server-side route proxy, uses GSAP for smooth micro-animations, and follows accessibility and web performance best practices.
 
 ## Features
 
@@ -25,7 +25,7 @@ Foto Owl is a polished, production-quality photo and video gallery built as a si
 
 ### 1. Environment Variable Setup
 
-Foto Owl requires a valid Pexels API Key.
+Frame Flow requires a valid Pexels API Key.
 
 1. Go to [Pexels API Documentation](https://www.pexels.com/api/new/) and create a free developer account to obtain your API key.
 2. Create a `.env.local` file in the root directory:

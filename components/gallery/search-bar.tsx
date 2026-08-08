@@ -60,7 +60,7 @@ export default function SearchBar({ initialValue, onSearch }: SearchBarProps) {
       </form>
 
       <div className="flex flex-wrap items-center gap-2 justify-center sm:justify-start">
-        <span className="text-xs text-zinc-500 dark:text-zinc-500 font-medium">
+        <span className="text-xs text-zinc-600 dark:text-zinc-400 font-medium">
           Popular searches:
         </span>
         {SUGGESTIONS.map((suggestion) => (
