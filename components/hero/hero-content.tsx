@@ -71,7 +71,7 @@ const HeroContent = forwardRef<HeroContentRefs, HeroContentProps>(
 
     return (
       <>
-        <Image src="/hero-bg-child.png" alt="Image" width={1000} height={1000} className="w-full h-full object-cover absolute z-30" />
+        <Image src="/hero-bg-mother-holding-child.png" alt="" width={1000} height={1000} className="w-full h-full object-cover absolute z-30 opacity-25 hover:opacity-100 transition-all duration-300" />
         <div className="relative z-10 flex flex-col justify-between h-full px-5 sm:px-8 md:px-12 lg:px-16 pt-20 pb-8 md:pb-12">
           {/*
           Top-right: short teaser copy — positioned absolute on md+ to mirror
@@ -110,9 +110,9 @@ const HeroContent = forwardRef<HeroContentRefs, HeroContentProps>(
                 textShadow: "0 2px 40px rgba(0,0,0,0.3)",
               }}
             >
-              <span className="block">DISCOVER</span>
-              <span className="block pl-[8%]">VISUAL</span>
-              <span className="block">STORIES</span>
+              <span className="block pl-[8%]">DISCOVER</span>
+              <span className="block">VISUAL</span>
+              <span className="block pl-[8%]">STORIES</span>
             </h1>
 
             {/*

@@ -101,7 +101,7 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const type = searchParams.get("type") || "photos";
-    const query = searchParams.get("query") || "";
+    const query = searchParams.get("query") || "old painting";
     const page = parseInt(searchParams.get("page") || "1", 10);
     const perPage = parseInt(searchParams.get("per_page") || "20", 10);
 
@@ -109,15 +109,15 @@ export async function GET(request: NextRequest) {
 
     if (!apiKey || apiKey === "your_pexels_api_key") {
       return NextResponse.json(
-        { 
-          error: "PEXELS_API_KEY is not configured on the server. Please add it to your .env.local file." 
+        {
+          error: "PEXELS_API_KEY is not configured on the server. Please add it to your .env.local file."
         },
         { status: 500 }
       );
     }
 
     let url = "";
-    
+
     if (type === "photos") {
       if (query.trim()) {
         url = `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&page=${page}&per_page=${perPage}`;

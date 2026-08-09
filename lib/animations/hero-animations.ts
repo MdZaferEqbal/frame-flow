@@ -40,6 +40,13 @@ export interface HeroScrollRefs {
   perspectiveWrapper: HTMLElement;
 }
 
+export interface GalleryScrollRefs {
+  /** The gallery <section> that will tilt forward */
+  gallerySection: HTMLElement | null;
+  /** The wrapper that provides the 3-D perspective context */
+  perspectiveWrapper: HTMLDivElement | null;
+}
+
 // ---------------------------------------------------------------------------
 // Intro animation
 // Runs once on mount. Returns a gsap.context() for clean teardown.
@@ -58,7 +65,7 @@ export function createHeroIntroAnimation(
       ...(refs.badge ? [refs.badge] : []),
     ];
     gsap.set(targets, { opacity: 1, y: 0, scale: 1 });
-    return gsap.context(() => {});
+    return gsap.context(() => { });
   }
 
   const ctx = gsap.context(() => {
@@ -119,7 +126,7 @@ export function createHeroScrollAnimation(
   refs: HeroScrollRefs
 ): () => void {
   if (prefersReducedMotion()) {
-    return () => {};
+    return () => { };
   }
 
   // Add perspective on the wrapper so rotationX works in 3-D space
@@ -139,12 +146,56 @@ export function createHeroScrollAnimation(
 
       gsap.set(refs.heroSection, {
         // Tilt backward — max 12° (restrained, not dramatic)
-        rotationX: p * 12,
+        rotationX: p * 75,
         // Scale down very slightly as it tilts
         scale: 1 - p * 0.06,
         // Push down and away
         y: p * 60,
         transformOrigin: "50% 100%",
+        transformPerspective: 1000,
+      });
+    },
+  });
+
+  return () => st.kill();
+}
+
+// ---------------------------------------------------------------------------
+// Scroll tilt animation
+// The gallery panel gently tilts fowraed and moves above the previous section.
+// Returns a cleanup function that kills the ScrollTrigger instance.
+// ---------------------------------------------------------------------------
+export function createGalleryScrollAnimation(
+  refs: GalleryScrollRefs
+): () => void {
+  if (prefersReducedMotion()) {
+    return () => { };
+  }
+
+  // Add perspective on the wrapper so rotationX works in 3-D space
+  gsap.set(refs.perspectiveWrapper, {
+    perspective: 1000,
+    transformStyle: "preserve-3d",
+  });
+
+  const st = ScrollTrigger.create({
+    trigger: refs.gallerySection,
+    start: "top bottom",
+    end: "top top",
+    scrub: 1.2,
+    onUpdate: (self) => {
+      const p = self.progress;
+      const inv = 1 - p; // reverse the time-mapping: starts tilted, ends flat
+
+      gsap.set(refs.gallerySection, {
+        // Tilt forward — starts maxed out, resolves to flat as it settles
+        rotationX: -inv * 100,
+        // Starts enlarged, settles to natural scale
+        scale: 1 + inv * 0.06,
+        // Starts pushed up/above, settles down into place
+        y: -inv * 60,
+        // Hinge from the top edge — opposite of hero's bottom hinge
+        transformOrigin: "50% 0%",
         transformPerspective: 1000,
       });
     },

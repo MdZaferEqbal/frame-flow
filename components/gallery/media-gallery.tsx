@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import { useMediaGallery } from "../../hooks/use-media-gallery";
 import { MediaItem } from "../../lib/types";
 import SearchBar from "./search-bar";
@@ -54,7 +54,7 @@ export default function MediaGallery() {
       </div>
 
       {/* Main Dynamic Workspace Area */}
-      <main className="min-h-[400px]">
+      <main className="min-h-100">
         {error ? (
           <ErrorState error={error} onRetry={retry} />
         ) : isLoading ? (

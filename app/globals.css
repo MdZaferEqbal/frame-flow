@@ -90,6 +90,13 @@ body {
   transform-style: preserve-3d;
 }
 
+/* ── Gallery perspective wrapper ─────────────────────────────────────────────── */
+/* Provides the 3-D context required by GSAP's rotationX scroll-tilt effect. */
+.gallery-perspective-wrapper {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
 /* ── Hero image layer ─────────────────────────────────────────────────────── */
 /* GPU compositing hint so GSAP scale/opacity changes are performant. */
 .hero-image-layer {
