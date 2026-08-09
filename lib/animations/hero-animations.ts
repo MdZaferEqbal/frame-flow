@@ -129,6 +129,8 @@ export function createHeroScrollAnimation(
     return () => { };
   }
 
+  console.log("createHeroScrollAnimation")
+
   // Add perspective on the wrapper so rotationX works in 3-D space
   gsap.set(refs.perspectiveWrapper, {
     perspective: 1000,
