@@ -42,7 +42,7 @@ export default function HeroSection({ headerRef }: HeroSectionProps) {
   };
 
   // useLayoutEffect avoids a flash by running synchronously after DOM paint
-  useLayoutEffect(() => {
+  useEffect(() => {
     // Guard against missing refs
     if (
       !wrapperRef.current ||
@@ -68,16 +68,6 @@ export default function HeroSection({ headerRef }: HeroSectionProps) {
       badge: contentRefsRef.current.badge,
     });
 
-    return () => {
-      introCtx.revert();
-    };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    if (!sectionRef.current || !perspectiveRef.current) {
-      return;
-    }
-
     // Scroll tilt effect
     const cleanupScroll = createHeroScrollAnimation({
       heroSection: sectionRef.current,
@@ -85,9 +75,10 @@ export default function HeroSection({ headerRef }: HeroSectionProps) {
     });
 
     return () => {
+      introCtx.revert();
       cleanupScroll();
     };
-  }, [])
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     /* Perspective wrapper — provides the 3-D context for the tilt */
