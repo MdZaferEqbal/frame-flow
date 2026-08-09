@@ -20,8 +20,11 @@ const iselora = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Frame Flow | Visual Media Gallery",
+  title: "Frame Flow",
   description: "Discover and explore high-resolution curated photos and sports video clips from global creators. Powered by Next.js, Tailwind CSS, and GSAP.",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({
