@@ -49,10 +49,16 @@ const SiteHeader = forwardRef<HTMLElement, SiteHeaderProps>(
         }}
       >
         {/* ── Logo ── */}
-        <Link
-          href="/"
+        <button
+          onClick={() => {
+            const topOfThePage = document.getElementById("top-of-the-page");
+            if (topOfThePage) {
+              topOfThePage.scrollIntoView({ behavior: "smooth" });
+            }
+          }}
+          type="button"
           aria-label="Frame Flow — home"
-          className="flex items-center gap-2.5 shrink-0 group"
+          className="flex items-center gap-2.5 shrink-0 group cursor-pointer"
         >
           <div
             className="
@@ -72,25 +78,32 @@ const SiteHeader = forwardRef<HTMLElement, SiteHeaderProps>(
           <span className="text-white text-sm font-semibold tracking-tight hidden sm:inline">
             Frame Flow
           </span>
-        </Link>
+        </button>
 
         {/* ── Primary navigation ── */}
         <nav aria-label="Primary navigation">
           <ul className="hidden md:flex items-center gap-6 lg:gap-8">
             {NAV_LINKS.map(({ label, href }) => (
               <li key={label}>
-                <a
-                  href={href}
+                <button
+                  onClick={() => {
+                    const topOfThePage = document.getElementById(href.substring(1));
+                    if (topOfThePage) {
+                      topOfThePage.scrollIntoView({ behavior: "smooth" });
+                    }
+                  }}
+                  type="button"
                   className="
                     text-white/75 hover:text-white
                     text-xs font-medium tracking-wide
                     transition-colors duration-150
                     focus:outline-none focus-visible:ring-2
                     focus-visible:ring-white/50 focus-visible:rounded
+                    cursor-pointer
                   "
                 >
                   {label}
-                </a>
+                </button>
               </li>
             ))}
           </ul>

@@ -56,7 +56,7 @@ export default function Home() {
       - hero-section has z-10
       - gallery section has z-20 so the hero scrolls behind it
     */
-    <div className="relative bg-background text-foreground">
+    <div className="relative bg-background text-foreground" id="top-of-the-page">
       {/* Fixed header — always above everything */}
       <SiteHeader ref={headerRef} theme={theme} onToggleTheme={toggleTheme} />
 
