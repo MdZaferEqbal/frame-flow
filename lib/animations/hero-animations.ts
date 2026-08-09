@@ -38,6 +38,8 @@ export interface HeroScrollRefs {
   heroSection: HTMLElement;
   /** The wrapper that provides the 3-D perspective context */
   perspectiveWrapper: HTMLElement;
+
+  image?: HTMLElement | null;
 }
 
 export interface GalleryScrollRefs {
@@ -134,6 +136,16 @@ export function createHeroScrollAnimation(
     perspective: 1000,
     transformStyle: "preserve-3d",
   });
+
+  // New
+  if (refs.image instanceof HTMLImageElement) {
+    if (refs.image.complete) {
+      ScrollTrigger.refresh();
+    } else {
+      refs.image.addEventListener("load", () => ScrollTrigger.refresh(), { once: true });
+    }
+  }
+  // End
 
   const st = ScrollTrigger.create({
     trigger: refs.heroSection,
