@@ -142,6 +142,7 @@ export function createHeroScrollAnimation(
     end: () => `+=${refs.heroSection.offsetHeight * 1.5}`,
     scrub: 1.2,
     onUpdate: (self) => {
+      console.log("On Update");
       const p = self.progress; // 0 → 1
 
       gsap.set(refs.heroSection, {
