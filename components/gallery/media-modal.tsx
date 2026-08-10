@@ -1,7 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import gsap from "gsap";
+import { useHeadlessLightbox } from "@media-ui-react";
+import { useMediaSDK } from "@media-react";
 import { MediaItem } from "../../lib/types";
 
 interface MediaModalProps {
@@ -12,9 +14,15 @@ interface MediaModalProps {
 
 export default function MediaModal({ isOpen, item, onClose }: MediaModalProps) {
   const [mounted, setMounted] = useState(false);
-  const backdropRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
-  const lastActiveElementRef = useRef<HTMLElement | null>(null);
+  const sdk = useMediaSDK();
+
+  const {
+    backdropRef,
+    contentRef,
+    getBackdropProps,
+    getContentProps,
+    getCloseButtonProps,
+  } = useHeadlessLightbox({ isOpen, onClose });
 
   // Handle client-side portal mounting
   useEffect(() => {
@@ -26,27 +34,6 @@ export default function MediaModal({ isOpen, item, onClose }: MediaModalProps) {
       setMounted(false);
     };
   }, []);
-
-  // Save the currently focused element on open, and restore it on close
-  useEffect(() => {
-    if (isOpen) {
-      lastActiveElementRef.current = document.activeElement as HTMLElement;
-    } else {
-      lastActiveElementRef.current?.focus();
-    }
-  }, [isOpen]);
-
-  // Lock body scroll when open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
 
   // GSAP animations for opening modal
   useEffect(() => {
@@ -79,54 +66,7 @@ export default function MediaModal({ isOpen, item, onClose }: MediaModalProps) {
     });
 
     return () => ctx.revert();
-  }, [isOpen, mounted]);
-
-  // Escape key close & Focus Trap listeners
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose();
-        return;
-      }
-
-      if (e.key === "Tab" && contentRef.current) {
-        const focusable = contentRef.current.querySelectorAll(
-          'a[href], button, video, [tabindex]:not([tabindex="-1"])'
-        );
-        const first = focusable[0] as HTMLElement;
-        const last = focusable[focusable.length - 1] as HTMLElement;
-
-        if (focusable.length === 0) return;
-
-        if (e.shiftKey) {
-          if (document.activeElement === first) {
-            last.focus();
-            e.preventDefault();
-          }
-        } else {
-          if (document.activeElement === last) {
-            first.focus();
-            e.preventDefault();
-          }
-        }
-      }
-    };
-
-    if (isOpen) {
-      window.addEventListener("keydown", handleKeyDown);
-      // Put focus inside the modal on load
-      setTimeout(() => {
-        const firstFocus = contentRef.current?.querySelector(
-          "button, a, video"
-        ) as HTMLElement;
-        firstFocus?.focus();
-      }, 100);
-    }
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [isOpen, onClose]);
+  }, [isOpen, mounted, backdropRef, contentRef]);
 
   if (!mounted || !isOpen || !item) return null;
 
@@ -153,30 +93,23 @@ export default function MediaModal({ isOpen, item, onClose }: MediaModalProps) {
 
   const videoSrc = getPlaybackUrl();
 
-  const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === backdropRef.current) {
-      onClose();
-    }
+  const handleDownloadClick = () => {
+    sdk.trackDownload(item);
   };
 
   return createPortal(
     <div
-      ref={backdropRef}
-      onClick={handleBackdropClick}
+      {...getBackdropProps()}
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/80 backdrop-blur-md"
-      role="dialog"
-      aria-modal="true"
       aria-labelledby="modal-title"
     >
       <div
-        ref={contentRef}
-        className="relative w-full max-w-4xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-900 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh] transition-colors duration-200"
+        {...getContentProps()}
+        className="relative w-full max-w-4xl bg-white dark:bg-zinc-950 border border-zinc-200/90 dark:border-zinc-900 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh] transition-colors duration-200 focus:outline-none"
       >
         {/* Modal Close Button */}
         <button
-          onClick={onClose}
-          type="button"
-          aria-label="Close modal"
+          {...getCloseButtonProps()}
           className="absolute top-4 right-4 z-20 p-2.5 rounded-full bg-black/60 hover:bg-black/80 text-white border border-white/10 transition-colors duration-150 cursor-pointer focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:ring-offset-2"
         >
           <svg
@@ -258,6 +191,7 @@ export default function MediaModal({ isOpen, item, onClose }: MediaModalProps) {
               href={item.url}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={handleDownloadClick}
               className="inline-flex items-center gap-1.5 px-4.5 py-2.5 bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-900 text-xs font-semibold rounded-xl transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-950 dark:focus:ring-offset-zinc-950 shadow-sm"
             >
               <span>View source page</span>

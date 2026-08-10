@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from "react";
+import { createPortal } from "react-dom";
 import gsap from "gsap";
 import { MediaItem, MediaType } from "../../lib/types";
 import MediaCard from "./media-card";
@@ -55,7 +56,11 @@ export default function MediaGrid({
 
   // --- Scroll-to-gallery-top button ---
   const [showScrollBtn, setShowScrollBtn] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const btnRef = useRef<HTMLButtonElement>(null);
+
+  // Mark mounted for portal rendering
+  useEffect(() => { setIsMounted(true); }, []);
 
   const scrollToGallery = useCallback(() => {
     document.getElementById("gallery")?.scrollIntoView({ behavior: "smooth" });
@@ -96,7 +101,9 @@ export default function MediaGrid({
     }
   }, [showScrollBtn]);
 
-  const scrollBtn = (
+  // Portalled to document.body so it truly floats above everything,
+  // including any overflow:hidden parent containers
+  const scrollBtn = isMounted ? createPortal(
     <button
       ref={btnRef}
       onClick={scrollToGallery}
@@ -104,7 +111,7 @@ export default function MediaGrid({
       title="Back to top of gallery"
       style={{ opacity: 0 }} // hidden initially; GSAP animates it in
       className="
-        fixed bottom-6 right-6 z-50
+        fixed bottom-6 right-6 z-[9999]
         flex items-center gap-1.5
         rounded-full
         bg-zinc-900/80 dark:bg-zinc-100/90
@@ -135,8 +142,9 @@ export default function MediaGrid({
         />
       </svg>
       Gallery Top
-    </button>
-  );
+    </button>,
+    document.body
+  ) : null;
 
   if (mediaType === "photos") {
     return (

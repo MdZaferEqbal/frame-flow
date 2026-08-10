@@ -1,6 +1,8 @@
 import React from "react";
 import Image from "next/image";
 import { MediaItem } from "../../lib/types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlay } from "@fortawesome/free-solid-svg-icons";
 
 interface MediaCardProps {
   item: MediaItem;
@@ -64,13 +66,7 @@ export default function MediaCard({ item, onClick }: MediaCardProps) {
 
           {/* Centered Play Button (Micro-animation on Hover) */}
           <div className="mx-auto p-3 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white shadow-lg transition-transform duration-300 scale-90 group-hover:scale-100 group-hover:bg-white/30">
-            <svg
-              className="w-6 h-6 fill-current translate-x-0.5"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path d="M8 5v14l11-7z" />
-            </svg>
+            <FontAwesomeIcon icon={faPlay} />
           </div>
 
           {/* Bottom Info bar */}

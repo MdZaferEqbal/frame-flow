@@ -110,9 +110,9 @@ const HeroContent = forwardRef<HeroContentRefs, HeroContentProps>(
                 textShadow: "0 2px 40px rgba(0,0,0,0.3)",
               }}
             >
-              <span className="block pl-[8%]">DISCOVER</span>
+              <span className="block pl-[4%]">DISCOVER</span>
               <span className="block">VISUAL</span>
-              <span className="block pl-[8%]">STORIES</span>
+              <span className="block pl-[4%]">STORIES</span>
             </h1>
 
             {/*

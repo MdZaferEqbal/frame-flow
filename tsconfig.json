@@ -12,14 +12,17 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
-    "incremental": true,
     "plugins": [
       {
         "name": "next"
       }
     ],
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@media-core": ["packages/media-core/index.ts"],
+      "@media-react": ["packages/media-react/index.tsx"],
+      "@media-ui-react": ["packages/media-ui-react/index.tsx"]
     }
   },
   "include": [
